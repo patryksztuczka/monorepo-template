@@ -59,6 +59,17 @@ Open http://localhost:5173 — the page shows live API status and a todo list ba
 | `pnpm db:push`     | push schema directly (prototyping, no migrations) |
 | `pnpm db:studio`   | open Drizzle Studio                               |
 
+## Effect typechecking
+
+`pnpm typecheck` runs `tsc` in every package. The root `prepare` script runs
+`effect-tsgo patch --typescript` after installs, replacing the local compiler with
+Effect's compatible build. This enables Effect diagnostics configured in
+`tsconfig.base.json`. Keep TypeScript's version compatible with `@effect/tsgo`.
+
+For VS Code, install the TypeScript 7 extension and configure the workspace SDK
+path as `./node_modules/typescript/bin`. Select that SDK and restart the
+TypeScript server.
+
 ## Documentation
 
 - [CONTEXT-MAP.md](./CONTEXT-MAP.md) — the domain contexts and where each one's `CONTEXT.md` (glossary of domain language) lives

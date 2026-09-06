@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "effect-tsgo patch --typescript",
     "dev": "vp run -r --parallel dev",
     "build": "vp run -r build",
     "test": "vp test",
@@ -20,6 +21,8 @@
     "db:studio": "pnpm --filter @example/database db:studio"
   },
   "devDependencies": {
+    "@effect/tsgo": "0.41.0",
+    "@oxlint/plugins": "1.79.0",
     "oxfmt": "catalog:",
     "oxlint": "catalog:",
     "typescript": "catalog:",

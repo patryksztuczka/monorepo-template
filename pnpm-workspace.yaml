@@ -3,20 +3,22 @@ packages:
   - packages/*
 
 allowBuilds:
-  cpu-features: true
   esbuild: true
+  # hooks are installed by `prepare` (`lefthook install`), not by postinstall
+  lefthook: false
   msgpackr-extract: true
-  protobufjs: true
-  ssh2: true
+  workerd: true
 
 catalog:
   # toolchain
   typescript: ^7.0.2
-  vite-plus: ^0.3.0
+  vite-plus: ^1.0.0
+  # `vite` is an alias of the core bundled by vite-plus (Vite 8 inside)
+  vite: npm:@voidzero-dev/vite-plus-core@1.0.0
   # keep in sync with the versions bundled by vite-plus
-  vitest: 4.1.11
-  oxfmt: 0.64.0
-  oxlint: 1.79.0
+  vitest: 5.0.1
+  oxfmt: 0.70.0
+  oxlint: 1.85.0
   "@types/node": ^26.3.0
   # web
   react: ^19.2.8
@@ -26,26 +28,31 @@ catalog:
   "@vitejs/plugin-react": ^6.1.0
   tailwindcss: ^4.3.3
   "@tailwindcss/vite": ^4.3.3
-  # api
-  hono: ^4.13.5
-  "@hono/trpc-server": ^0.4.2
-  "@trpc/server": ^11.18.0
-  "@trpc/client": ^11.18.0
-  "@trpc/tanstack-react-query": ^11.18.0
   "@tanstack/react-query": ^5.102.8
   react-hook-form: ^7.86.0
   "@hookform/resolvers": ^5.9.1
-  "@hono/node-server": ^2.1.1
-  effect: 4.0.0-rc.112
-  "@effect/sql-pg": 4.0.0-rc.112
-  "@effect/vitest": 4.0.0-rc.112
-  "@testcontainers/postgresql": ^12.1.0
-  drizzle-orm: 1.0.0-rc.5-169397b
-  drizzle-kit: 1.0.0-rc.4
-  pg: ^8.23.0
-  "@types/pg": ^8.23.1
+  # api (Cloudflare Worker deployed with Alchemy)
+  alchemy: 2.0.0-beta.80
+  "@cloudflare/workers-types": 5.20260918.1
+  effect: 4.0.0
+  "@effect/platform-node": 4.0.0
+  "@effect/sql-d1": 4.0.0
+  "@effect/vitest": 4.0.0
+  # keep in sync with the drizzle build alchemy's Drizzle integration expects
+  drizzle-orm: 1.0.0-rc.5-ab785fc
+  drizzle-kit: 1.0.0-rc.5-ab785fc
 
 minimumReleaseAgeExclude:
-  - hono@4.13.5
   - "@tanstack/query-core@5.102.8"
   - "@tanstack/react-query@5.102.8"
+
+# Recommended by vite-plus: every package resolves the same Vite and Vitest
+# that `vp` bundles. Keep both in step with the vite-plus catalog version.
+overrides:
+  "vite@*": npm:@voidzero-dev/vite-plus-core@1.0.0
+  "vitest@*": 5.0.1
+
+peerDependencyRules:
+  allowedVersions:
+    # the `vite` alias is versioned like vite-plus (1.x) but bundles Vite 8
+    vite: 1.0.0

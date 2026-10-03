@@ -3,10 +3,9 @@ import { CreateTodoInput } from "@example/shared/todo";
 import { Button, Input } from "@example/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useTRPC } from "../../lib/trpc";
+import { createTodoMutation, todoListQuery } from "./todo-queries";
 
 export function CreateTodoForm() {
-  const trpc = useTRPC();
   const queryClient = useQueryClient();
 
   const form = useForm<CreateTodoInput>({
@@ -14,14 +13,13 @@ export function CreateTodoForm() {
     defaultValues: { title: "" },
   });
 
-  const createTodo = useMutation(
-    trpc.todo.create.mutationOptions({
-      onSuccess: () => {
-        form.reset();
-        return queryClient.invalidateQueries({ queryKey: trpc.todo.list.queryKey() });
-      },
-    }),
-  );
+  const createTodo = useMutation({
+    ...createTodoMutation,
+    onSuccess: () => {
+      form.reset();
+      return queryClient.invalidateQueries({ queryKey: todoListQuery.queryKey });
+    },
+  });
 
   const titleError = form.formState.errors.title;
 

@@ -12,6 +12,11 @@ export default defineConfig({
   fmt,
   lint,
   test: {
+    // alchemy/Test/Vitest registers its sidecar cleanup after a test file's
+    // `afterAll(destroy(Stack))` and needs hooks to run in registration order.
+    // Vitest's default ("stack") closes the sidecar first and `destroy` hangs.
+    // Only settable here, not per project.
+    sequence: { hooks: "list" },
     // .agent-sources holds read-only source mirrors for reference — never test them
     projects: [
       {
@@ -23,6 +28,8 @@ export default defineConfig({
             "**/dist/**",
             "**/.agent-sources/**",
             "**/*-integration.test.ts",
+            // node:test suites for the lint plugin, run by `pnpm test:lint-rules`
+            "tools/oxlint/**",
           ],
         },
       },
@@ -31,8 +38,8 @@ export default defineConfig({
           name: "integration",
           include: ["**/*-integration.test.ts"],
           exclude: ["**/node_modules/**", "**/dist/**", "**/.agent-sources/**"],
-          // Spins up an ephemeral postgres via testcontainers and applies migrations
-          globalSetup: ["./apps/api/test/integration-setup.ts"],
+          // Deploys the stack locally (workerd + D1), see apps/infra/tests
+          testTimeout: 120_000,
         },
       },
     ],

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@effect/vitest";
-import { Effect } from "effect";
+import { DateTime, Effect } from "effect";
 import { TestClock } from "effect/testing";
 import { TodoService } from "../todo-service.ts";
 
@@ -13,7 +13,7 @@ describe("TodoService", () => {
       const list = yield* service.list;
       expect(list).toHaveLength(2);
       expect(list[0]).toEqual(second);
-    }).pipe(Effect.provide(TodoService.testLayer)),
+    }).pipe(Effect.provide(TodoService.layerTest)),
   );
 
   it.effect("stamps createdAt from the clock", () =>
@@ -22,8 +22,8 @@ describe("TodoService", () => {
       yield* TestClock.adjust("5 seconds");
 
       const todo = yield* service.create({ title: "clocked" });
-      expect(todo.createdAt.getTime()).toBe(5000);
+      expect(DateTime.toEpochMillis(todo.createdAt)).toBe(5000);
       expect(todo.done).toBe(false);
-    }).pipe(Effect.provide(TodoService.testLayer)),
+    }).pipe(Effect.provide(TodoService.layerTest)),
   );
 });

@@ -1,0 +1,13 @@
+# Pre-commit fence: a commit lands only if the checks and tests pass.
+# Installed by `pnpm install` (the root `prepare` script runs `lefthook install`).
+# Agents cannot skip it: .claude, .codex, .cursor and .pi hooks block
+# `--no-verify` and friends (scripts/vcs-command-policy.ts).
+pre-commit:
+  parallel: false
+  commands:
+    check:
+      run: pnpm check
+    typecheck:
+      run: pnpm typecheck
+    test:
+      run: pnpm test

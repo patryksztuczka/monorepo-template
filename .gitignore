@@ -6,3 +6,4 @@ dist/
 .vite/
 .vp/
 coverage/
+.alchemy/

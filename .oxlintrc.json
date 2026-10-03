@@ -8,7 +8,8 @@
   },
   "jsPlugins": [
     { "name": "anti-slop", "specifier": "./tools/oxlint/anti-slop/index.ts" },
-    { "name": "anti-slop-effect", "specifier": "./tools/oxlint/anti-slop/effect/index.ts" }
+    { "name": "anti-slop-effect", "specifier": "./tools/oxlint/anti-slop/effect/index.ts" },
+    { "name": "effect-style", "specifier": "./tools/oxlint/effect-style/index.ts" }
   ],
   "rules": {
     "anti-slop/no-chained-type-assertions": "error",
@@ -27,6 +28,29 @@
     "anti-slop/no-widen-then-assert": "error",
     "anti-slop/require-safety-comment-for-type-assertion": "error",
     "anti-slop-effect/no-service-constructor-imports": "error",
+    "effect-style/bounded-concurrency": "error",
+    "effect-style/branded-ids": "error",
+    "effect-style/effect-fn-name": "error",
+    "effect-style/fork-detach-reason": "error",
+    "effect-style/layer-config-only-in-roots": "error",
+    "effect-style/layer-naming": "error",
+    "effect-style/log-literal-message": "error",
+    "effect-style/no-ambient-date": "error",
+    "effect-style/no-decode-sync": "error",
+    "effect-style/no-error-instanceof": "error",
+    "effect-style/no-error-subclass": "error",
+    "effect-style/no-new-promise": "error",
+    "effect-style/no-throw": "error",
+    "effect-style/no-throw-in-effect": "error",
+    "effect-style/no-try-in-tests": "error",
+    "effect-style/no-untyped-failure": "error",
+    "effect-style/redacted-secrets": "error",
+    "effect-style/retry-requires-while": "error",
+    "effect-style/run-only-in-entry-points": "error",
+    "effect-style/service-explicit-shape": "error",
+    "effect-style/service-id-matches-path": "error",
+    "effect-style/tagged-error-naming": "error",
+    "effect-style/try-requires-catch": "error",
     "import/no-unassigned-import": "off",
     "unicorn/filename-case": ["error", { "case": "kebabCase" }]
   },
@@ -51,6 +75,13 @@
     "tools/oxlint/anti-slop/**"
   ],
   "overrides": [
+    {
+      "files": ["tools/oxlint/effect-style/**"],
+      "rules": {
+        "anti-slop/no-runtime-typeof": "off",
+        "anti-slop/no-shape-in-symbol-names": "off"
+      }
+    },
     {
       "files": ["apps/web/**", "packages/ui/**"],
       "plugins": ["react"],

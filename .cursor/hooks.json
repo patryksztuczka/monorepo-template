@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "node scripts/hooks/block-git-hook-bypass.ts",
+        "matcher": "git",
+        "failClosed": true
+      }
+    ]
+  }
+}

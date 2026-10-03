@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useTRPC } from "../../lib/trpc";
+import { DateTime } from "effect";
+import { todoListQuery } from "./todo-queries";
 
 export function TodoList() {
-  const trpc = useTRPC();
-  const todos = useQuery(trpc.todo.list.queryOptions());
+  const todos = useQuery(todoListQuery);
 
   if (todos.isPending) {
     return <p className="text-sm text-zinc-500">loading…</p>;
@@ -21,7 +21,7 @@ export function TodoList() {
         <li key={todo.id} className="flex items-baseline gap-2 text-sm text-zinc-300">
           <span className={todo.done ? "line-through opacity-50" : ""}>{todo.title}</span>
           <span className="ml-auto shrink-0 text-xs text-zinc-600">
-            {new Date(todo.createdAt).toLocaleTimeString()}
+            {DateTime.toDateUtc(todo.createdAt).toLocaleTimeString()}
           </span>
         </li>
       ))}

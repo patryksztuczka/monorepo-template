@@ -3,30 +3,25 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./trpc": "./src/trpc-router.ts"
+    "./worker": "./src/index.ts"
   },
   "scripts": {
-    "dev": "node --watch --env-file-if-exists=../../.env src/index.ts",
-    "start": "node --env-file-if-exists=../../.env src/index.ts",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@effect/sql-d1": "catalog:",
     "@example/database": "workspace:*",
     "@example/shared": "workspace:*",
-    "@hono/node-server": "catalog:",
-    "@hono/trpc-server": "catalog:",
-    "@trpc/server": "catalog:",
+    "alchemy": "catalog:",
     "drizzle-orm": "catalog:",
-    "effect": "catalog:",
-    "hono": "catalog:"
+    "effect": "catalog:"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "catalog:",
     "@effect/vitest": "catalog:",
-    "@testcontainers/postgresql": "catalog:",
     "@types/node": "catalog:",
-    "@types/pg": "catalog:",
-    "pg": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vite-plus": "catalog:",
     "vitest": "catalog:"
   }

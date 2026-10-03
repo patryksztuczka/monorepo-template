@@ -1,0 +1,5 @@
+{
+  "name": "oxlint-plugin-effect-style",
+  "private": true,
+  "type": "module"
+}

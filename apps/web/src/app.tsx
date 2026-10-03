@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Effect } from "effect";
+import { ApiClient } from "./lib/api-client";
 import { CreateTodoForm } from "./modules/todo/create-todo-form";
 import { TodoList } from "./modules/todo/todo-list";
+import { runtime } from "./runtime";
 
 export default function App() {
-  const [apiStatus, setApiStatus] = useState<string>("checking…");
+  const health = useQuery({
+    queryKey: ["health"],
+    queryFn: () => runtime.runPromise(Effect.flatMap(ApiClient, (api) => api.health.check())),
+  });
 
-  useEffect(() => {
-    fetch("/api/hello")
-      .then((res) => res.json() as Promise<{ message: string }>)
-      .then((data) => setApiStatus(data.message))
-      .catch(() => setApiStatus("api offline"));
-  }, []);
+  const apiStatus = health.isPending
+    ? "checking…"
+    : health.isError
+      ? "api offline"
+      : health.data.status;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-zinc-950 text-zinc-50">
@@ -23,7 +28,9 @@ export default function App() {
       </div>
 
       <section className="flex w-80 flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-        <h2 className="text-sm font-semibold text-zinc-400">todos via tRPC + TanStack Query</h2>
+        <h2 className="text-sm font-semibold text-zinc-400">
+          todos via Effect HttpApi + TanStack Query
+        </h2>
         <CreateTodoForm />
         <TodoList />
       </section>

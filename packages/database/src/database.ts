@@ -1,18 +1,14 @@
-import { PgClient } from "@effect/sql-pg";
-import * as PgDrizzle from "drizzle-orm/effect-postgres";
-import { Config, Context, Layer, Redacted } from "effect";
+import type { D1Client } from "@effect/sql-d1/D1Client";
+import type { EffectSQLiteD1Database } from "drizzle-orm/effect-d1";
+import { Context } from "effect";
 
+/**
+ * Drizzle over Cloudflare D1. Query builders are yieldable Effects.
+ *
+ * The layer lives next to the D1 binding in `apps/api`, because only the
+ * Worker can resolve the binding.
+ */
 export class Database extends Context.Service<
   Database,
-  PgDrizzle.EffectPgDatabase & { readonly $client: PgClient.PgClient }
->()("@example/Database") {
-  static readonly clientLayer = PgClient.layerConfig({
-    url: Config.redacted("DATABASE_URL").pipe(
-      Config.withDefault(Redacted.make("postgres://example:example@localhost:5434/example")),
-    ),
-  });
-
-  static readonly layer = Layer.effect(Database, PgDrizzle.makeWithDefaults()).pipe(
-    Layer.provide(Database.clientLayer),
-  );
-}
+  EffectSQLiteD1Database & { readonly $client: D1Client }
+>()("@example/Database") {}
